@@ -3,54 +3,29 @@
 function countSameElements(collection) {
   var list=[];
   function getWordCnt(){ 
-    return collection.reduce(function(prev,next){ 
-        prev[next] = (prev[next] + 1) || 1; 
-        return prev; 
+    return collection.reduce(function(acc,cur){ 
+        acc[cur] = (acc[cur] + 1) || 1; 
+        return acc; 
     },{}); 
 } 
   var object=getWordCnt();
-  console.log(object);
-  Object.keys(object).forEach(function(key){
-    if(key=='d-5'){
-      var temp ={};
-      temp.name='d';
-      temp.summary=5;
-      list.push(temp)
-    }
-    else if(key=='h[3]'){
+  console.log('object :', object);
+  Object.keys(object).forEach(key=>{
+    if(key.length>1){
+      var flag=0;      
       list.forEach((item)=>{
-        if(item.name=='h'){
-          item.summary+=3;
+        if(item.name==key[0]){
+          flag=1;
+          item.summary+=parseInt(key.replace(/[^0-9]/ig,""));
         }
       })
-    }
-    else if(key=='c:8'){
-      var temp ={};
-      temp.name='c';
-      temp.summary=8;
-      list.push(temp)
-    }
-    else if(key=='t-2'){
-      list.forEach((item)=>{
-        if(item.name=='t'){
-          item.summary+=2;
-        }
-      })
-    }
-    else if(key=='t[10]'){
-      list.forEach((item)=>{
-        if(item.name=='t'){
-          item.summary+=10;
-        }
-      })
+      if(flag==0){
+        list.push({name:key[0],summary:parseInt(key[2])})
+      }
     }
     else{
-      var temp ={};
-      temp.name=key;
-      temp.summary=object[key];
-      list.push(temp)
+      list.push({name:key,summary:object[key]})
     }
 });
-console.log(list);
   return list;
 }
